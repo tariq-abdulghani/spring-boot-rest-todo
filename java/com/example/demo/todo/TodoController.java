@@ -20,22 +20,22 @@ public class TodoController {
 		this.todoService = todoService;
 	}
 
-	@GetMapping("/todo")
+	@GetMapping("/todos")
 	Set<Todo> getAll(){
 		return this.todoService.getAll();
 	}
 	
-	@GetMapping("/todo/{id}")
+	@GetMapping("/todos/{id}")
 	Todo getById(@PathVariable Long id){
 		return this.todoService.getById(id);
 	}
 	
-	@PostMapping("/todo")
+	@PostMapping("/todos")
 	Todo add(@RequestBody Todo todo) {
 		return todoService.save(todo);
 	}
 	
-	@DeleteMapping("/todo/{id}")
+	@DeleteMapping("/todos/{id}")
 	void remove(@PathVariable Long id) {
 		this.todoService.removeById(id);
 	}
