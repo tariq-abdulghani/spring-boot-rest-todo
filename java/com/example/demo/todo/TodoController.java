@@ -1,7 +1,11 @@
 package com.example.demo.todo;
 
+import java.net.URI;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +35,11 @@ public class TodoController {
 	}
 	
 	@PostMapping("/todos")
-	Todo add(@RequestBody Todo todo) {
-		return todoService.save(todo);
+	ResponseEntity<Todo>  add(@RequestBody Todo todo, HttpServletRequest request) {
+		
+		todoService.save(todo);
+		URI uri = URI.create(request.getRequestURI() + todo.getId());
+		return ResponseEntity.created(uri).body(todo);
 	}
 	
 	@DeleteMapping("/todos/{id}")
