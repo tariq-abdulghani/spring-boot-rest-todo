@@ -43,7 +43,8 @@ public class TodoController {
 	}
 	
 	@DeleteMapping("/todos/{id}")
-	void remove(@PathVariable Long id) {
+	ResponseEntity<Todo> remove(@PathVariable Long id) {
 		this.todoService.removeById(id);
+		return ResponseEntity.noContent().build();
 	}
 }
