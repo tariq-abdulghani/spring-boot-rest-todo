@@ -1,7 +1,7 @@
 package com.example.demo.todo;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -57,15 +57,28 @@ public class TodoController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ExceptionHandler({EmptyResultDataAccessException.class})
-	ResponseEntity<Todo> handleNotFound(EmptyResultDataAccessException emptyResultDataAccessException) {
+//	@ExceptionHandler({EmptyResultDataAccessException.class})
+//	ResponseEntity<Todo> handleNotFound(EmptyResultDataAccessException emptyResultDataAccessException) {
+//		// log emptyResultDataAccessException.getMessage();
+//		Map<String, String> respnseMap = new HashMap<String, String>();
+//		respnseMap.put("timestamp", LocalDate.now().toString());
+//		respnseMap.put("status", HttpStatus.NOT_FOUND.toString());
+//		respnseMap.put("error", "Not Found");
+//		respnseMap.put("messge", "resource not found");
+//		respnseMap.put("path", "some path");
+//		return new ResponseEntity(respnseMap, HttpStatus.NOT_FOUND);
+	
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	@ExceptionHandler({ EmptyResultDataAccessException.class })
+	Map<String, String> handleNotFound(EmptyResultDataAccessException emptyResultDataAccessException,
+			HttpServletRequest httpServletRequest) {
 		// log emptyResultDataAccessException.getMessage();
-		Map<String, String> respnseMap = new HashMap<String, String>();
-		respnseMap.put("timestamp", LocalDate.now().toString());
-		respnseMap.put("status", HttpStatus.NOT_FOUND.toString());
-		respnseMap.put("error", "Not Found");
-		respnseMap.put("messge", "resource not found");
-		respnseMap.put("path", "some path");
-		return new ResponseEntity(respnseMap, HttpStatus.NOT_FOUND);
+		Map<String, String> responseErrorMap = new HashMap<String, String>();
+		responseErrorMap.put("timestamp", LocalDateTime.now().toString());
+		responseErrorMap.put("status", String.valueOf(HttpStatus.NOT_FOUND.value()));
+		responseErrorMap.put("error", HttpStatus.NOT_FOUND.getReasonPhrase());
+		responseErrorMap.put("messege", "resource not found");
+		responseErrorMap.put("path", httpServletRequest.getRequestURI());
+		return responseErrorMap;
 	}
 }
