@@ -41,6 +41,15 @@ public class TodoServiceImpl implements TodoService{
 	public void removeById(Long id) {
 		todoRepository.deleteById(id);
 	}
+
+	@Override
+	public Todo patchStatus(Long id, Todo todo) {
+		return todoRepository.findById(id).map(t->{
+			t.setStatus(todo.getStatus());
+			todoRepository.save(t);
+			return t;
+		}).orElseThrow(RuntimeException :: new);
+	}
 	
 	
 }

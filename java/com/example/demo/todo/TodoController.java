@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +50,11 @@ public class TodoController {
 		todoService.save(todo);
 		URI uri = URI.create(request.getRequestURI() + todo.getId());
 		return ResponseEntity.created(uri).body(todo);
+	}
+	
+	@PatchMapping("/todos/{id}")
+	Todo patchStatus(@PathVariable(name = "id") Long id ,@RequestBody Todo todo) {
+		return todoService.patchStatus(id, todo);
 	}
 	
 	@DeleteMapping("/todos/{id}")

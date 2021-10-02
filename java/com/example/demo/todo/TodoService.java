@@ -10,6 +10,8 @@ public interface TodoService {
 	
 	Todo save(Todo todo);
 	
+	Todo patchStatus(Long id, Todo todo);
+	
 	void remove(Todo todo);
 	
 	void removeById(Long id);

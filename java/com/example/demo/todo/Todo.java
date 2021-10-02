@@ -83,6 +83,7 @@ public class Todo {
 	private void init() {
 		this.creationDate = LocalDate.now();
 		this.lastModified = LocalDate.now();
+		this.status = Status.TODO;
 	}
 	
 	@PostUpdate
