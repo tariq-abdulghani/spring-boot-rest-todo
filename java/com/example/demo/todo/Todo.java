@@ -1,16 +1,17 @@
 package com.example.demo.todo;
 
 import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 @Entity
 @Table(name = "todos")
@@ -29,7 +30,13 @@ public class Todo {
 	@Column(name = "creation_date")
 	private LocalDate creationDate;
 	
-
+	@Column(name = "last_modified")
+	private LocalDate lastModified;
+	
+	@Column(name = "status")
+	@Enumerated(EnumType.STRING)
+	private Status status;
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,10 +64,30 @@ public class Todo {
 	public LocalDate getCreationDate() {
 		return creationDate;
 	}
+	
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
+	
+	public LocalDate getLastModified() {
+		return lastModified;
+	}
 
 	@PostPersist
 	private void init() {
 		this.creationDate = LocalDate.now();
+		this.lastModified = LocalDate.now();
+	}
+	
+	@PostUpdate
+	private void update() {
+		this.lastModified = LocalDate.now();
 	}
 	
 }
